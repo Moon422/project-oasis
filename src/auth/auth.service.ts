@@ -22,8 +22,9 @@ export class AuthService {
     }
 
     async signup(newUserDto: NewUserDto): Promise<string> {
-        const { firstName, lastName, age, auth: _auth } = newUserDto;
+        const { firstName, lastName, age, address: _address, auth: _auth } = newUserDto;
         const { username, password } = _auth;
+        const { placeName, postOffice, policeStation, district } = _address;
 
         const salt = await genSalt();
         const hashedPassword = await hash(password, salt);
@@ -34,7 +35,13 @@ export class AuthService {
                     manager.create(User, {
                         firstName,
                         lastName,
-                        age
+                        age,
+                        address: {
+                            placeName,
+                            postOffice,
+                            policeStation,
+                            district
+                        }
                     })
                 );
 
