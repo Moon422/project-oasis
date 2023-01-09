@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auth } from './auth/auth.entity';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/user.entity';
+import { Product } from './product/product.entity';
 import { ProductModule } from './product/product.module';
 
 @Module({
@@ -14,7 +15,7 @@ import { ProductModule } from './product/product.module';
       password: 'hola',
       host: 'localhost',
       synchronize: true,
-      entities: [Auth, User]
+      entities: [Auth, User, Product]
     }),
     AuthModule,
     ProductModule
