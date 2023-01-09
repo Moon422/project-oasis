@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auth } from './auth/auth.entity';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/user.entity';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { User } from './auth/user.entity';
       synchronize: true,
       entities: [Auth, User]
     }),
-    AuthModule
+    AuthModule,
+    ProductModule
   ],
   controllers: [],
   providers: [],
