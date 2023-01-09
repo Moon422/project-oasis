@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Auth } from 'src/auth/auth.entity';
 import { GetAuth } from 'src/auth/get-auth.decorator';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { ProductService } from './product.service';
 
-@Controller('product')
+@Controller('products')
 @UseGuards(AuthGuard())
 export class ProductController {
     constructor(
@@ -20,5 +20,10 @@ export class ProductController {
     @Post()
     addProduct(@Body() createProductDto: CreateProductDto, @GetAuth() auth: Auth) {
         return this.productService.addProduct(createProductDto, auth);
+    }
+
+    @Patch(":productId/price")
+    updateProductPrice(@Param("productId") productId: string, @Body("price") price: number, @GetAuth() auth: Auth) {
+        return this.productService.updateProductPrice(productId, price, auth);
     }
 }

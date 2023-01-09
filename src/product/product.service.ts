@@ -35,4 +35,19 @@ export class ProductService {
 
         return await this.entityManager.save(product)
     }
+
+    async updateProductPrice(productId: string, price: number, auth: Auth) {
+        const user = auth.user;
+        console.log(price);
+
+        const updateResult = await this.entityManager
+            .update(Product, {
+                id: productId,
+                user
+            }, { price });
+
+        if (updateResult.affected === 0) {
+            throw new BadRequestException("Failed to update price. Please check correct product is selected.");
+        }
+    }
 }
