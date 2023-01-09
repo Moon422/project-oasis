@@ -22,7 +22,7 @@ export class AuthService {
     }
 
     async signup(newUserDto: NewUserDto): Promise<string> {
-        const { firstName, lastName, age, address: _address, auth: _auth } = newUserDto;
+        const { firstName, lastName, dateOfBirth, address: _address, auth: _auth } = newUserDto;
         const { username, password } = _auth;
         const { placeName, postOffice, policeStation, district } = _address;
 
@@ -35,7 +35,7 @@ export class AuthService {
                     manager.create(User, {
                         firstName,
                         lastName,
-                        age,
+                        dateOfBirth,
                         address: {
                             placeName,
                             postOffice,

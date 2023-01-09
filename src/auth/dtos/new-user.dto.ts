@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength, MaxLength, IsNumber, IsNotEmptyObject } from "class-validator";
+import { IsNotEmpty, IsString, MinLength, MaxLength, IsNumber, IsNotEmptyObject, IsDate } from "class-validator";
 import { AddressDto } from "./address.dto";
 import { AuthCredDto } from "./auth-cred.dto";
 
@@ -15,9 +15,13 @@ export class NewUserDto {
     @MaxLength(60)
     lastName: string;
 
+    // @IsNotEmpty()
+    // @IsNumber()
+    // age: number;
+
     @IsNotEmpty()
-    @IsNumber()
-    age: number;
+    @IsDate()
+    dateOfBirth: Date;
 
     @IsNotEmpty()
     @IsNotEmptyObject()

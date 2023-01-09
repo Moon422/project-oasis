@@ -14,8 +14,8 @@ export class User {
     @Column({ length: 60 })
     lastName: string;
 
-    @Column({ type: "tinyint" })
-    age: number;
+    @Column({ type: "date" })
+    dateOfBirth: Date;
 
     @Column(type => Address)
     address: Address;
