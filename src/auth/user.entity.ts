@@ -1,4 +1,5 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Product } from "src/product/product.entity";
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Address } from "./address.entity";
 import { Auth } from "./auth.entity";
 import { UserType } from "./user-type.enum";
@@ -14,7 +15,7 @@ export class User {
     @Column({ length: 60 })
     lastName: string;
 
-    @Column({ type: "date" })
+    @Column()
     dateOfBirth: Date;
 
     @Column(type => Address)
@@ -25,4 +26,7 @@ export class User {
 
     @OneToOne(type => Auth, auth => auth.user)
     auth: Auth;
+
+    @OneToMany(type => Product, product => product.user, { eager: false })
+    products: Product[];
 }

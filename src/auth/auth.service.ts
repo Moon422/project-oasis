@@ -5,6 +5,7 @@ import { EntityManager } from 'typeorm';
 import { Auth } from './auth.entity';
 import { AuthCredDto } from './dtos/auth-cred.dto';
 import { NewUserDto } from './dtos/new-user.dto';
+import { UserType } from './user-type.enum';
 import { User } from './user.entity';
 
 @Injectable()
@@ -22,9 +23,8 @@ export class AuthService {
     }
 
     async signup(newUserDto: NewUserDto): Promise<string> {
-        const { firstName, lastName, dateOfBirth, address: _address, auth: _auth } = newUserDto;
+        const { firstName, lastName, dateOfBirth, address, auth: _auth } = newUserDto;
         const { username, password } = _auth;
-        const { placeName, postOffice, policeStation, district } = _address;
 
         const salt = await genSalt();
         const hashedPassword = await hash(password, salt);
@@ -36,12 +36,8 @@ export class AuthService {
                         firstName,
                         lastName,
                         dateOfBirth,
-                        address: {
-                            placeName,
-                            postOffice,
-                            policeStation,
-                            district
-                        }
+                        userType: UserType.FARMER,
+                        address
                     })
                 );
 
@@ -56,6 +52,7 @@ export class AuthService {
                 return this.encodeToken(username);
             });
         } catch (error) {
+            console.log(error);
             if (error.errno === 1062) {
                 throw new BadRequestException("Username already exists. Please use a different username.");
             } else {
@@ -67,14 +64,11 @@ export class AuthService {
     async signin(authCredDto: AuthCredDto): Promise<string> {
         const { username, password } = authCredDto;
 
-        const auth = await this.entityManager.createQueryBuilder()
-            .select()
-            .from(Auth, "auth")
-            .where("auth.username = :username", { username })
-            .getOne();
+        const auth = await this.entityManager.createQueryBuilder(Auth, "auth").where("auth.username = :username", { username }).getOne();
+        // console.log(auth);
 
         if (auth && await compare(password, auth.password)) {
-            return this.encodeToken(auth.username);
+            return await this.encodeToken(auth.username);
         }
 
         throw new BadRequestException("Invalid credentials");
