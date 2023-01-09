@@ -19,7 +19,7 @@ import { User } from './user.entity';
     JwtModule.register({
       secret: "9z$C&F)J@NcRfUjXn2r5u8x/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4",
       signOptions: {
-        expiresIn: "5m",
+        expiresIn: 3600,
       }
     }),
   ],
