@@ -26,4 +26,9 @@ export class ProductController {
     updateProductPrice(@Param("productId") productId: string, @Body("price") price: number, @GetAuth() auth: Auth) {
         return this.productService.updateProductPrice(productId, price, auth);
     }
+
+    @Patch(":productId/quantity")
+    updateProductQuantity(@Param("productId") productId: string, @Body("quantity") quantity: number, @GetAuth() auth: Auth) {
+        return this.productService.updateProductQuantity(productId, quantity, auth);
+    }
 }

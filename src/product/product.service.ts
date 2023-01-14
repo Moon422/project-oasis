@@ -38,7 +38,6 @@ export class ProductService {
 
     async updateProductPrice(productId: string, price: number, auth: Auth) {
         const user = auth.user;
-        console.log(price);
 
         const updateResult = await this.entityManager
             .update(Product, {
@@ -48,6 +47,20 @@ export class ProductService {
 
         if (updateResult.affected === 0) {
             throw new BadRequestException("Failed to update price. Please check correct product is selected.");
+        }
+    }
+
+    async updateProductQuantity(productId: string, quantity: number, auth: Auth) {
+        const user = auth.user;
+
+        const updateResult = await this.entityManager
+            .update(Product, {
+                id: productId,
+                user
+            }, { quantity });
+
+        if (updateResult.affected === 0) {
+            throw new BadRequestException("Failed to update quantity. Please check correct product is selected.");
         }
     }
 }
