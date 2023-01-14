@@ -12,7 +12,6 @@ export class ProductService {
     ) { }
 
     async getAll(auth: Auth): Promise<Product[]> {
-        // console.log(auth);
         const { user } = auth;
         return await this.entityManager.findBy(Product, {
             user
@@ -21,7 +20,6 @@ export class ProductService {
 
     async addProduct(createProductDto: CreateProductDto, auth: Auth): Promise<Product> {
         const user = auth.user;
-        // console.log(auth);
 
         if (user.userType !== UserType.FARMER && user.userType !== UserType.ADMIN) {
             throw new BadRequestException("Sorry you cannot add a product");
