@@ -6,6 +6,10 @@ import { User } from './auth/user.entity';
 import { Product } from './product/product.entity';
 import { ProductModule } from './product/product.module';
 import { LocationModule } from './location/location.module';
+import { Division } from './location/division.entity';
+import { District } from './location/district.entity';
+import { SubDistrict } from './location/sub-district.entity';
+import { Union } from './location/union.entity';
 
 @Module({
   imports: [
@@ -16,7 +20,7 @@ import { LocationModule } from './location/location.module';
       password: 'hola',
       host: 'localhost',
       synchronize: true,
-      entities: [Auth, User, Product]
+      entities: [Auth, User, Product, Division, District, SubDistrict, Union]
     }),
     AuthModule,
     ProductModule,
