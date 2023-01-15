@@ -1,0 +1,42 @@
+[
+    {
+        "id": "1",
+        "name": "Chattagram",
+        "bnName": "চট্টগ্রাম"
+    },
+    {
+        "id": "2",
+        "name": "Rajshahi",
+        "bnName": "রাজশাহী"
+    },
+    {
+        "id": "3",
+        "name": "Khulna",
+        "bnName": "খুলনা"
+    },
+    {
+        "id": "4",
+        "name": "Barisal",
+        "bnName": "বরিশাল"
+    },
+    {
+        "id": "5",
+        "name": "Sylhet",
+        "bnName": "সিলেট"
+    },
+    {
+        "id": "6",
+        "name": "Dhaka",
+        "bnName": "ঢাকা"
+    },
+    {
+        "id": "7",
+        "name": "Rangpur",
+        "bnName": "রংপুর"
+    },
+    {
+        "id": "8",
+        "name": "Mymensingh",
+        "bnName": "ময়মনসিংহ"
+    }
+]
