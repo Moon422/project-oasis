@@ -1,15 +1,10 @@
-import { Column } from "typeorm";
+import { Union } from "src/location/union.entity";
+import { Column, ManyToOne } from "typeorm";
 
 export class Address {
-    @Column({ name: "placeName", length: 60 })
+    @Column({ type: "varchar", length: 255 })
     placeName: string;
 
-    @Column({ name: "postOffice", length: 60 })
-    postOffice: string;
-
-    @Column({ name: "policeStation", length: 60 })
-    policeStation: string;
-
-    @Column({ name: "district", length: 60 })
-    district: string;
+    @ManyToOne((type) => Union, { eager: true })
+    union: Union;
 }
