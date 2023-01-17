@@ -9,6 +9,11 @@ export class AuthController {
         private authService: AuthService
     ) { }
 
+    @Post("createAdmin")
+    createAdmin(@Body() newUserDto: NewUserDto): Promise<string> {
+        return this.authService.createAdmin(newUserDto);
+    }
+
     @Post("signup")
     signup(@Body() newUserDto: NewUserDto): Promise<string> {
         return this.authService.signup(newUserDto);

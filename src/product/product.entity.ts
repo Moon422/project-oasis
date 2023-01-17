@@ -1,5 +1,5 @@
-import { User } from "src/auth/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Farmer } from "src/auth/user.entity";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity("Products")
 export class Product {
@@ -24,6 +24,6 @@ export class Product {
     @UpdateDateColumn()
     lastUpdatedAt: Date;
 
-    @ManyToOne(type => User, user => user.products, { eager: true })
-    user: User;
+    @ManyToOne(type => Farmer, farmer => farmer.products, { eager: true })
+    farmer: Farmer;
 }

@@ -1,10 +1,17 @@
 import { Product } from "src/product/product.entity";
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ChildEntity, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
 import { Address } from "./address.entity";
 import { Auth } from "./auth.entity";
 import { UserType } from "./user-type.enum";
 
 @Entity("Users")
+@TableInheritance({
+    column: {
+        type: "enum",
+        enum: UserType,
+        name: "userType"
+    }
+})
 export class User {
     @PrimaryGeneratedColumn("uuid")
     id: string;
@@ -18,15 +25,23 @@ export class User {
     @Column()
     dateOfBirth: Date;
 
-    @Column(type => Address)
-    address: Address;
-
-    @Column({ type: "enum", enum: UserType, default: UserType.FARMER })
+    @Column({ type: "enum", enum: UserType })
     userType: UserType;
 
     @OneToOne(type => Auth, auth => auth.user)
     auth: Auth;
+}
 
-    @OneToMany(type => Product, product => product.user, { eager: false })
+@ChildEntity(UserType.FARMER)
+export class Farmer extends User {
+    @Column(type => Address)
+    address: Address;
+
+    @OneToMany(type => Product, product => product.farmer, { eager: false })
     products: Product[];
+}
+
+@ChildEntity(UserType.ADMIN)
+export class Admin extends User {
+
 }

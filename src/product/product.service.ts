@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotImplementedException } from '@nestjs/common';
 import { Auth } from 'src/auth/auth.entity';
 import { UserType } from 'src/auth/user-type.enum';
 import { EntityManager } from 'typeorm';
@@ -14,21 +14,21 @@ export class ProductService {
     async getAll(auth: Auth): Promise<Product[]> {
         const { user } = auth;
         return await this.entityManager.findBy(Product, {
-            user
+            farmer: user
         })
     }
 
     async addProduct(createProductDto: CreateProductDto, auth: Auth): Promise<Product> {
         const user = auth.user;
 
-        if (user.userType !== UserType.FARMER && user.userType !== UserType.ADMIN) {
+        if (user.userType !== UserType.FARMER) {
             throw new BadRequestException("Sorry you cannot add a product");
         }
 
         const { name, details, quantity, price } = createProductDto;
 
         const product = this.entityManager.create(Product, {
-            name, details, quantity, price, user
+            name, details, quantity, price, farmer: user
         })
 
         return await this.entityManager.save(product)
