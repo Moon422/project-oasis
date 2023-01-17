@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auth } from './auth/auth.entity';
 import { AuthModule } from './auth/auth.module';
-import { User } from './auth/user.entity';
+import { Admin, Farmer, User } from './auth/user.entity';
 import { Product } from './product/product.entity';
 import { ProductModule } from './product/product.module';
 import { LocationModule } from './location/location.module';
@@ -20,7 +20,7 @@ import { Union } from './location/union.entity';
       password: 'hola',
       host: 'localhost',
       synchronize: true,
-      entities: [Auth, User, Product, Division, District, SubDistrict, Union]
+      entities: [Auth, User, Admin, Farmer, Product, Division, District, SubDistrict, Union]
     }),
     AuthModule,
     ProductModule,

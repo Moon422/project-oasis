@@ -15,7 +15,7 @@ export class SubDistrict {
     bnName: string;
 
     @Column(() => Coordinates)
-    coordinates: Coordinates;
+    coordinates?: Coordinates;
 
     @ManyToOne((type) => District, (district) => district.subDistricts, { eager: true })
     district: District;

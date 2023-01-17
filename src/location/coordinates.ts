@@ -1,5 +1,6 @@
-import { Column } from "typeorm";
+import { Column, Index } from "typeorm";
 
+@Index(["longitude", "latitude"], { unique: true })
 export class Coordinates {
     @Column({
         type: "decimal",
@@ -7,7 +8,7 @@ export class Coordinates {
         scale: 8,
         name: "longitude"
     })
-    longitude?: number;
+    longitude: number;
 
     @Column({
         type: "decimal",
@@ -15,5 +16,5 @@ export class Coordinates {
         scale: 8,
         name: "latitude"
     })
-    latitude?: number;
+    latitude: number;
 }

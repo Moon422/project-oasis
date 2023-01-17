@@ -1,7 +1,13 @@
 import { Module } from '@nestjs/common';
+import { AuthModule } from 'src/auth/auth.module';
 import { LocationService } from './location.service';
+import { LocationController } from './location.controller';
 
 @Module({
-  providers: [LocationService]
+  imports: [
+    AuthModule
+  ],
+  providers: [LocationService],
+  controllers: [LocationController]
 })
-export class LocationModule {}
+export class LocationModule { }

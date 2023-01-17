@@ -7,14 +7,14 @@ export class Division {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column({ type: "varchar", length: 255, unique: true })
     name: string;
 
     @Column({ type: "varchar", length: 255 })
     bnName: string;
 
     @Column(() => Coordinates)
-    coordinates: Coordinates;
+    coordinates?: Coordinates;
 
     @OneToMany((type) => District, (district) => district.division, { eager: false })
     districts: District[];

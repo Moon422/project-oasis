@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Coordinates } from "./coordinates";
 import { SubDistrict } from "./sub-district.entity";
 
@@ -14,7 +14,7 @@ export class Union {
     bnName: string;
 
     @Column(() => Coordinates)
-    coordinates: Coordinates;
+    coordinates?: Coordinates;
 
     @ManyToOne((type) => SubDistrict, (subDistrict) => subDistrict.unions, { eager: true })
     subDistrict: SubDistrict;
