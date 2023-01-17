@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { userInfo } from 'os';
 import { Auth } from 'src/auth/auth.entity';
 import { UserType } from 'src/auth/user-type.enum';
@@ -38,8 +38,10 @@ export class LocationService {
 
                 return division.id;
             } catch (err) {
-                console.log(err);
-                throw new BadRequestException();
+                if (err.errno === 1062)
+                    throw new BadRequestException("Cannot add divisions with duplicate names");
+
+                throw new InternalServerErrorException();
             }
         }
 
@@ -57,7 +59,7 @@ export class LocationService {
                 const division = await this.entityManager.findOneBy(Division, { id: divisionId });
 
                 if (!division) {
-                    throw new BadRequestException();
+                    throw new BadRequestException("Invalid division ID sent");
                 }
 
                 const district = await this.entityManager.save(
@@ -73,8 +75,10 @@ export class LocationService {
 
                 return district.id;
             } catch (err) {
-                console.log(err);
-                throw new BadRequestException();
+                if (err.errno === 1062)
+                    throw new BadRequestException("More than one district cannot coexist on same coordinates");
+
+                throw new InternalServerErrorException();
             }
         }
 
@@ -92,7 +96,7 @@ export class LocationService {
                 const district = await this.entityManager.findOneBy(District, { id: districtId });
 
                 if (!district) {
-                    throw new BadRequestException();
+                    throw new BadRequestException("Invalid district ID sent");
                 }
 
                 const subDistrict = await this.entityManager.save(
@@ -108,8 +112,10 @@ export class LocationService {
 
                 return subDistrict.id;
             } catch (err) {
-                console.log(err);
-                throw new BadRequestException();
+                if (err.errno === 1062)
+                    throw new BadRequestException("More than one subdistrict cannot coexist on same coordinates");
+
+                throw new InternalServerErrorException();
             }
         }
 
@@ -129,7 +135,7 @@ export class LocationService {
                 });
 
                 if (!subDistrict) {
-                    throw new BadRequestException();
+                    throw new BadRequestException("Invalid subdistrict ID sent");
                 }
 
                 const union = await this.entityManager.save(
@@ -144,8 +150,10 @@ export class LocationService {
 
                 return union.id;
             } catch (err) {
-                console.log(err);
-                throw new BadRequestException();
+                if (err.errno === 1062)
+                    throw new BadRequestException("More than one union cannot coexist on same coordinates");
+
+                throw new InternalServerErrorException();
             }
         }
 
