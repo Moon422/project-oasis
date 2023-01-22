@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, genSalt, hash } from 'bcrypt';
+import { Union } from 'src/location/union.entity';
 import { EntityManager } from 'typeorm';
 import { Auth } from './auth.entity';
 import { AuthCredDto } from './dtos/auth-cred.dto';
@@ -23,13 +24,21 @@ export class AuthService {
     }
 
     async createAdmin(newUserDto: NewUserDto): Promise<string> {
-        const { firstName, lastName, dateOfBirth, address, auth: _auth } = newUserDto;
+        const { firstName, lastName, dateOfBirth, email, phoneNumber, address, auth: _auth } = newUserDto;
         const { username, password } = _auth;
 
         const salt = await genSalt();
         const hashedPassword = await hash(password, salt);
 
         try {
+            const union = await this.entityManager.findOneBy(Union, {
+                id: address.unionId
+            });
+
+            if (!union) {
+                throw new BadRequestException();
+            }
+
             return await this.entityManager.transaction(async manager => {
                 const user = await manager.save(
                     manager.create(Admin, {
@@ -37,6 +46,10 @@ export class AuthService {
                         lastName,
                         dateOfBirth,
                         userType: UserType.ADMIN,
+                        email,
+                        phoneNumber,
+                        placeName: address.placeName,
+                        union
                     })
                 );
 
@@ -61,13 +74,24 @@ export class AuthService {
     }
 
     async signup(newUserDto: NewUserDto): Promise<string> {
-        const { firstName, lastName, dateOfBirth, address, auth: _auth } = newUserDto;
+        const { firstName, lastName, dateOfBirth, email, phoneNumber, address, auth: _auth } = newUserDto;
         const { username, password } = _auth;
+        const { placeName, unionId } = address;
 
         const salt = await genSalt();
         const hashedPassword = await hash(password, salt);
 
         try {
+            const union = await this.entityManager.findOneBy(Union, {
+                id: unionId
+            });
+
+            if (!union) {
+                throw new BadRequestException();
+            }
+
+            console.log(union);
+
             return await this.entityManager.transaction(async manager => {
                 const user = await manager.save(
                     manager.create(Farmer, {
@@ -75,7 +99,10 @@ export class AuthService {
                         lastName,
                         dateOfBirth,
                         userType: UserType.FARMER,
-                        address
+                        email,
+                        phoneNumber,
+                        placeName,
+                        union
                     })
                 );
 

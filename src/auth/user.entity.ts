@@ -1,6 +1,6 @@
+import { Union } from "src/location/union.entity";
 import { Product } from "src/product/product.entity";
-import { ChildEntity, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
-import { Address } from "./address.entity";
+import { ChildEntity, Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
 import { Auth } from "./auth.entity";
 import { UserType } from "./user-type.enum";
 
@@ -12,7 +12,7 @@ import { UserType } from "./user-type.enum";
         name: "userType"
     }
 })
-export class User {
+export abstract class User {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
@@ -28,15 +28,24 @@ export class User {
     @Column({ type: "enum", enum: UserType })
     userType: UserType;
 
+    @Column({ length: 255 })
+    email: string;
+
+    @Column({ length: 14 })
+    phoneNumber: string;
+
+    @Column({ type: "varchar", length: 255 })
+    placeName: string;
+
+    @ManyToOne((type) => Union, (union) => union.farmers, { eager: true })
+    union: Union;
+
     @OneToOne(type => Auth, auth => auth.user)
     auth: Auth;
 }
 
 @ChildEntity(UserType.FARMER)
 export class Farmer extends User {
-    @Column(type => Address)
-    address: Address;
-
     @OneToMany(type => Product, product => product.farmer, { eager: false })
     products: Product[];
 }

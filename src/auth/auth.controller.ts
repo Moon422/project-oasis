@@ -11,6 +11,7 @@ export class AuthController {
 
     @Post("createAdmin")
     createAdmin(@Body() newUserDto: NewUserDto): Promise<string> {
+        // console.log(newUserDto);
         return this.authService.createAdmin(newUserDto);
     }
 

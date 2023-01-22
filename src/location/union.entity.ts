@@ -1,4 +1,5 @@
-import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Farmer } from "src/auth/user.entity";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Coordinates } from "./coordinates";
 import { SubDistrict } from "./sub-district.entity";
 
@@ -18,4 +19,7 @@ export class Union {
 
     @ManyToOne((type) => SubDistrict, (subDistrict) => subDistrict.unions, { eager: true })
     subDistrict: SubDistrict;
+
+    @OneToMany((type) => Farmer, (farmer) => farmer.union, { eager: false })
+    farmers: Farmer[];
 }
